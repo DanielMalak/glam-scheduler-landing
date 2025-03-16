@@ -35,7 +35,7 @@ const Index = () => {
                   <div className="relative">
                     <div className="aspect-[4/5] rounded-lg overflow-hidden">
                       <img 
-                        src="https://images.unsplash.com/photo-1599206676935-a5a6a57477e8" 
+                        src="https://images.unsplash.com/photo-1560066984-138dadb4c035" 
                         alt="Nail salon interior" 
                         className="w-full h-full object-cover"
                       />
@@ -129,7 +129,7 @@ const Index = () => {
                   className="group relative aspect-[3/4] overflow-hidden rounded-lg"
                 >
                   <img
-                    src={`https://images.unsplash.com/photo-${index === 1 ? '1607779097040-52e58a0de1e4' : index === 2 ? '1604654894610-df63bc536371' : '1622557850710-0f7a256a9e68'}`}
+                    src={`https://images.unsplash.com/photo-${index === 1 ? '1600428877878-1a0ff561d8ae' : index === 2 ? '1522337660859-02fbefca4702' : '1636369826853-94922820d991'}`}
                     alt={`Gallery preview ${index}`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -214,7 +214,7 @@ const Index = () => {
                 <div className="hidden md:block relative">
                   <div className="absolute inset-0 bg-dedo-black/10"></div>
                   <img
-                    src="https://images.unsplash.com/photo-1600020037141-33ad569a5f61"
+                    src="https://images.unsplash.com/photo-1632345031435-8727f6897d53"
                     alt="Nail services"
                     className="w-full h-full object-cover"
                   />
