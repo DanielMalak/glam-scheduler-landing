@@ -17,23 +17,77 @@ const timeSlots = [
   '5:00 PM', '6:00 PM', '7:00 PM'
 ];
 
-const services = [
-  'Signature Manicure',
-  'Luxury Spa Pedicure',
-  'Gel Polish Manicure',
-  'Nail Art & Design',
-  'Acrylic Full Set',
-  'Acrylic Fill',
-  'Dip Powder',
-  'Nail Repair'
+const packages = [
+  {
+    id: 'basic-mani',
+    name: 'Basic Manicure',
+    description: 'File, shape, cuticle care, hand massage, and polish.',
+    price: '$25'
+  },
+  {
+    id: 'gel-mani',
+    name: 'Gel Manicure',
+    description: 'Basic manicure plus gel polish for longer wear.',
+    price: '$35'
+  },
+  {
+    id: 'deluxe-mani',
+    name: 'Deluxe Manicure',
+    description: 'Basic manicure plus exfoliation, extended massage, and paraffin treatment.',
+    price: '$40'
+  },
+  {
+    id: 'basic-pedi',
+    name: 'Basic Pedicure',
+    description: 'Foot soak, scrub, file, shape, cuticle care, and polish.',
+    price: '$35'
+  },
+  {
+    id: 'deluxe-pedi',
+    name: 'Deluxe Pedicure',
+    description: 'Basic pedicure plus callus removal, extended massage, and exfoliation.',
+    price: '$50'
+  },
+  {
+    id: 'mani-pedi',
+    name: 'Mani-Pedi Combo',
+    description: 'Basic manicure and pedicure service.',
+    price: '$55'
+  },
+  {
+    id: 'gel-mani-pedi',
+    name: 'Gel Mani-Pedi Combo',
+    description: 'Gel manicure and deluxe pedicure service.',
+    price: '$75'
+  },
+  {
+    id: 'nail-art',
+    name: 'Nail Art',
+    description: 'Custom nail art per nail or full set.',
+    price: 'From $5 per nail'
+  }
 ];
 
 const AppointmentForm = () => {
   const [step, setStep] = useState(1);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [timeSlot, setTimeSlot] = useState<string | undefined>(undefined);
-  const [service, setService] = useState<string | undefined>(undefined);
+  const [selectedPackage, setSelectedPackage] = useState<string | undefined>(undefined);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    notes: ''
+  });
   const { toast } = useToast();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
 
   const goToNextStep = () => {
     if (step === 1 && !date) {
@@ -54,10 +108,10 @@ const AppointmentForm = () => {
       return;
     }
 
-    if (step === 3 && !service) {
+    if (step === 3 && !selectedPackage) {
       toast({
-        title: "Please select a service",
-        description: "You must choose at least one service.",
+        title: "Please select a package",
+        description: "You must choose a service package for your appointment.",
         variant: "destructive",
       });
       return;
@@ -81,13 +135,19 @@ const AppointmentForm = () => {
     
     toast({
       title: "Appointment Booked!",
-      description: `Your appointment for ${service} on ${date ? format(date, 'MMMM do, yyyy') : ''} at ${timeSlot} has been confirmed.`,
+      description: `Your appointment for ${selectedPackage && packages.find(p => p.id === selectedPackage)?.name} on ${date ? format(date, 'MMMM do, yyyy') : ''} at ${timeSlot} has been confirmed.`,
     });
 
     // Reset form
     setDate(undefined);
     setTimeSlot(undefined);
-    setService(undefined);
+    setSelectedPackage(undefined);
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      notes: ''
+    });
     setStep(1);
   };
 
@@ -181,28 +241,33 @@ const AppointmentForm = () => {
             className="space-y-6"
           >
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-serif text-dedo-black">Select a Service</h3>
-              <p className="text-gray-500 mt-1">Choose a service for your appointment</p>
+              <h3 className="text-2xl font-serif text-dedo-black">Select a Package</h3>
+              <p className="text-gray-500 mt-1">Choose a service package for your appointment</p>
             </div>
             
-            <div className="max-w-md mx-auto">
-              <Select onValueChange={setService} value={service}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent position="item-aligned">
-                  {services.map((service) => (
-                    <SelectItem key={service} value={service}>
-                      {service}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
+              {packages.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className={`border rounded-md p-4 cursor-pointer transition-all ${
+                    selectedPackage === pkg.id
+                      ? 'border-dedo-beige bg-dedo-beige/10'
+                      : 'hover:border-dedo-beige'
+                  }`}
+                  onClick={() => setSelectedPackage(pkg.id)}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="font-medium">{pkg.name}</h4>
+                    <span className="text-dedo-black font-medium">{pkg.price}</span>
+                  </div>
+                  <p className="text-sm text-gray-600">{pkg.description}</p>
+                </div>
+              ))}
             </div>
-
-            {service && (
+            
+            {selectedPackage && (
               <div className="text-center text-sm text-dedo-beige mt-2">
-                <p>You selected: {service}</p>
+                <p>You selected: {packages.find(p => p.id === selectedPackage)?.name}</p>
               </div>
             )}
           </motion.div>
@@ -225,22 +290,46 @@ const AppointmentForm = () => {
             <div className="space-y-4 max-w-md mx-auto">
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
-                <Input id="name" placeholder="Enter your name" required />
+                <Input 
+                  id="name" 
+                  placeholder="Enter your name" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required 
+                />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Enter your email" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required 
+                />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" placeholder="Enter your phone number" required />
+                <Input 
+                  id="phone" 
+                  placeholder="Enter your phone number" 
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required 
+                />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="notes">Special Requests (Optional)</Label>
-                <Textarea id="notes" placeholder="Any special requests or information we should know" />
+                <Textarea 
+                  id="notes" 
+                  placeholder="Any special requests or information we should know" 
+                  value={formData.notes}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
             
@@ -256,8 +345,12 @@ const AppointmentForm = () => {
                   <span className="font-medium">{timeSlot}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Service:</span>
-                  <span className="font-medium">{service}</span>
+                  <span className="text-gray-600">Package:</span>
+                  <span className="font-medium">{packages.find(p => p.id === selectedPackage)?.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Price:</span>
+                  <span className="font-medium">{packages.find(p => p.id === selectedPackage)?.price}</span>
                 </div>
               </div>
             </div>
@@ -300,7 +393,7 @@ const AppointmentForm = () => {
         <div className="flex justify-between text-xs text-gray-500 pb-6">
           <span>Date</span>
           <span>Time</span>
-          <span>Service</span>
+          <span>Package</span>
           <span>Details</span>
         </div>
       </div>
