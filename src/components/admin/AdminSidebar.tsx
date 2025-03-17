@@ -7,6 +7,8 @@ import {
   Calendar,
   LogOut,
   Home,
+  Image,
+  UserCog,
 } from "lucide-react";
 import {
   Sidebar,
@@ -48,6 +50,16 @@ const AdminSidebar = () => {
       title: "Schedule",
       path: "/admin/schedule",
       icon: Calendar,
+    },
+    {
+      title: "Gallery",
+      path: "/admin/gallery",
+      icon: Image,
+    },
+    {
+      title: "Employees",
+      path: "/admin/employees",
+      icon: UserCog,
     },
   ];
 

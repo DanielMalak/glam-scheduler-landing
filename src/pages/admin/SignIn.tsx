@@ -1,120 +1,108 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, LogIn } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { employees } from "@/data/employeesData";
 
-const formSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-});
+interface LocationState {
+  from?: {
+    pathname?: string;
+  };
+}
 
-type FormValues = z.infer<typeof formSchema>;
-
-const SignInPage = () => {
+const AdminSignIn = () => {
+  const [email, setEmail] = useState("admin@dedosglam.com");
+  const [password, setPassword] = useState("password123");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const state = location.state as LocationState;
+  
+  // Get the page they tried to visit before being redirected to login
+  const from = state?.from?.pathname || "/admin";
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  const onSubmit = (data: FormValues) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     
-    // In a real app, you would validate credentials against a backend
+    // Simulate authentication delay
     setTimeout(() => {
-      // For demo purposes only - in production you would use proper authentication
-      if (data.email === "admin@dedosglam.com" && data.password === "password123") {
+      const employee = employees.find(emp => emp.email === email && emp.password === password);
+      
+      if (employee) {
+        // Set authenticated status in localStorage
         localStorage.setItem("isAdminAuthenticated", "true");
+        localStorage.setItem("adminEmail", email);
+        
         toast({
           title: "Sign in successful",
-          description: "Welcome to the admin dashboard",
+          description: `Welcome back, ${employee.name}!`,
         });
-        navigate("/admin");
+        
+        // Navigate to the page they tried to visit or the admin dashboard
+        navigate(from);
       } else {
         toast({
-          title: "Authentication failed",
+          title: "Sign in failed",
           description: "Invalid email or password",
           variant: "destructive",
         });
       }
+      
       setIsLoading(false);
     }, 1000);
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-serif">Admin Sign In</CardTitle>
+          <CardTitle className="text-2xl font-bold">Admin Sign In</CardTitle>
           <CardDescription>
             Enter your credentials to access the admin dashboard
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="admin@dedosglam.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Email
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@dedosglam.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  "Signing in..."
-                ) : (
-                  <>
-                    <LogIn className="mr-2 h-4 w-4" />
-                    Sign In
-                  </>
-                )}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
-            <Lock className="inline mr-1 h-4 w-4" />
-            For demo: use admin@dedosglam.com / password123
-          </p>
-        </CardFooter>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading ? "Signing in..." : "Sign In"}
+            </Button>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   );
 };
 
-export default SignInPage;
+export default AdminSignIn;
