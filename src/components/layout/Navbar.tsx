@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LayoutDashboard } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +32,7 @@ const Navbar = () => {
     { name: 'Gallery', path: '/gallery' },
     { name: 'Book Now', path: '/booking' },
     { name: 'Contact', path: '/contact' },
+    { name: 'Admin', path: '/admin', icon: LayoutDashboard }
   ];
 
   return (
@@ -67,12 +68,13 @@ const Navbar = () => {
               >
                 <Link
                   to={link.path}
-                  className={`transition-colors duration-300 text-sm tracking-wide ${
+                  className={`transition-colors duration-300 text-sm tracking-wide flex items-center gap-1 ${
                     location.pathname === link.path
                       ? 'text-dedo-black font-medium'
                       : 'text-gray-600 hover:text-dedo-black'
                   }`}
                 >
+                  {link.icon && <link.icon className="h-4 w-4" />}
                   {link.name}
                   {location.pathname === link.path && (
                     <motion.div
@@ -129,12 +131,13 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`block py-2 text-base ${
+              className={`flex items-center gap-2 py-2 text-base ${
                 location.pathname === link.path
                   ? 'text-dedo-black font-medium'
                   : 'text-gray-600'
               }`}
             >
+              {link.icon && <link.icon className="h-4 w-4" />}
               {link.name}
             </Link>
           ))}
