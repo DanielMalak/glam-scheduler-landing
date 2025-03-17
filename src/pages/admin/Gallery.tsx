@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import {
   Table,
@@ -46,7 +45,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-// Define the form schema
 const formSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
@@ -68,7 +66,6 @@ const AdminGallery = () => {
   const dragOverItem = useRef<number | null>(null);
   const permissions = usePermissions("gallery");
 
-  // Form setup
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,7 +75,6 @@ const AdminGallery = () => {
     },
   });
 
-  // Reset form and open for editing
   const handleEdit = (image: GalleryImage) => {
     setEditingImage(image);
     form.reset({
@@ -88,10 +84,8 @@ const AdminGallery = () => {
     });
   };
 
-  // Handle form submission
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (editingImage) {
-      // Update existing image
       setImages(currentImages => 
         currentImages.map(img => 
           img.id === editingImage.id 
@@ -104,10 +98,11 @@ const AdminGallery = () => {
         description: "The gallery image has been updated successfully"
       });
     } else {
-      // Add new image
       const newImage: GalleryImage = {
         id: Date.now().toString(),
-        ...values,
+        title: values.title,
+        category: values.category,
+        url: values.url,
         order: images.length + 1
       };
       setImages([...images, newImage]);
@@ -125,7 +120,6 @@ const AdminGallery = () => {
     });
   };
 
-  // Handle image deletion
   const confirmDelete = (id: string) => {
     setImageToDelete(id);
     setIsDeleteDialogOpen(true);
@@ -143,7 +137,6 @@ const AdminGallery = () => {
     }
   };
 
-  // Drag and drop functionality
   const handleDragStart = (index: number) => {
     dragItem.current = index;
   };
@@ -157,13 +150,10 @@ const AdminGallery = () => {
       const imagesCopy = [...images];
       const draggedItem = imagesCopy[dragItem.current];
       
-      // Remove the item from its original position
       imagesCopy.splice(dragItem.current, 1);
       
-      // Insert at the new position
       imagesCopy.splice(dragOverItem.current, 0, draggedItem);
       
-      // Update order property for all images
       const reorderedImages = imagesCopy.map((img, index) => ({
         ...img,
         order: index + 1
@@ -175,13 +165,11 @@ const AdminGallery = () => {
         description: "The gallery images have been reordered"
       });
       
-      // Reset refs
       dragItem.current = null;
       dragOverItem.current = null;
     }
   };
 
-  // Move image up or down
   const moveImage = (id: string, direction: 'up' | 'down') => {
     const index = images.findIndex(img => img.id === id);
     if ((direction === 'up' && index === 0) || 
@@ -192,10 +180,8 @@ const AdminGallery = () => {
     const newImages = [...images];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     
-    // Swap the items
     [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]];
     
-    // Update order property
     const reorderedImages = newImages.map((img, idx) => ({
       ...img,
       order: idx + 1
@@ -441,7 +427,6 @@ const AdminGallery = () => {
         ))}
       </div>
 
-      {/* Delete confirmation dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>

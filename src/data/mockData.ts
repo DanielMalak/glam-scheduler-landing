@@ -1,5 +1,14 @@
 
 // Mock data for the admin dashboard
+export const services = [
+  { id: "1", name: "Haircut", description: "Basic haircut service", price: 50, duration: 45, category: "Hair", popularity: 35 },
+  { id: "2", name: "Hair Coloring", description: "Full hair coloring service", price: 120, duration: 120, category: "Hair", popularity: 25 },
+  { id: "3", name: "Manicure", description: "Basic manicure service", price: 35, duration: 30, category: "Nails", popularity: 15 },
+  { id: "4", name: "Pedicure", description: "Basic pedicure service", price: 45, duration: 45, category: "Nails", popularity: 10 },
+  { id: "5", name: "Facial", description: "Basic facial treatment", price: 80, duration: 60, category: "Skin", popularity: 8 },
+  { id: "6", name: "Makeup", description: "Full makeup application", price: 90, duration: 60, category: "Makeup", popularity: 7 },
+];
+
 export const servicesData = [
   { id: 1, name: "Haircut", description: "Basic haircut service", price: 50, duration: 45, category: "Hair", popularity: 35 },
   { id: 2, name: "Hair Coloring", description: "Full hair coloring service", price: 120, duration: 120, category: "Hair", popularity: 25 },
