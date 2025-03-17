@@ -1,11 +1,12 @@
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
   Scissors,
   Calendar,
   LogOut,
+  Home,
 } from "lucide-react";
 import {
   Sidebar,
@@ -20,9 +21,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useToast } from "@/hooks/use-toast";
 
 const AdminSidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   const menuItems = [
     {
@@ -47,9 +51,18 @@ const AdminSidebar = () => {
     },
   ];
 
+  const handleSignOut = () => {
+    localStorage.removeItem("isAdminAuthenticated");
+    toast({
+      title: "Signed out successfully",
+      description: "You have been signed out of the admin dashboard",
+    });
+    navigate("/");
+  };
+
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar className="border-r">
         <SidebarHeader className="border-b p-4">
           <div className="flex items-center">
             <h1 className="text-xl font-semibold">Dedo's Glam Admin</h1>
@@ -81,9 +94,15 @@ const AdminSidebar = () => {
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <Link to="/">
-                      <LogOut />
+                      <Home />
                       <span>Back to Website</span>
                     </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={handleSignOut}>
+                    <LogOut />
+                    <span>Sign Out</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>

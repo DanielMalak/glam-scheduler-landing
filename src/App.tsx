@@ -14,6 +14,8 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminServices from "./pages/admin/Services";
 import AdminClients from "./pages/admin/Clients";
 import AdminSchedule from "./pages/admin/Schedule";
+import AdminSignIn from "./pages/admin/SignIn";
+import AdminAuth from "./components/admin/AdminAuth";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +31,11 @@ const App = () => (
           <Route path="/booking" element={<Booking />} />
           <Route path="/contact" element={<Contact />} />
           
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
+          {/* Admin Auth Route */}
+          <Route path="/admin/sign-in" element={<AdminSignIn />} />
+          
+          {/* Protected Admin Routes */}
+          <Route path="/admin" element={<AdminAuth><AdminLayout /></AdminAuth>}>
             <Route index element={<AdminDashboard />} />
             <Route path="services" element={<AdminServices />} />
             <Route path="clients" element={<AdminClients />} />
