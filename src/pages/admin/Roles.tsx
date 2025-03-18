@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Table,
@@ -122,7 +121,11 @@ const AdminRoles = () => {
       setRoles(currentRoles => 
         currentRoles.map(role => 
           role.id === editingRole.id 
-            ? { ...role, ...values } 
+            ? { 
+                ...role,
+                name: values.name,
+                permissions: values.permissions
+              } 
             : role
         )
       );
@@ -133,7 +136,8 @@ const AdminRoles = () => {
     } else {
       const newRole: Role = {
         id: Date.now().toString(),
-        ...values,
+        name: values.name,
+        permissions: values.permissions
       };
       setRoles([...roles, newRole]);
       toast({

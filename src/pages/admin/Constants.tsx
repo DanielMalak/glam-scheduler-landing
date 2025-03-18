@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Table,
@@ -87,7 +86,9 @@ const AdminConstants = () => {
     } else {
       const newConstant: SiteConstants = {
         id: Date.now().toString(),
-        ...values,
+        name: values.name,
+        value: values.value,
+        type: values.type
       };
       setConstants([...constants, newConstant]);
       toast({

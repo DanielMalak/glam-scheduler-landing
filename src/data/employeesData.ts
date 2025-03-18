@@ -11,7 +11,9 @@ export const roles: Role[] = [
       clients: { create: true, read: true, update: true, delete: true },
       schedule: { create: true, read: true, update: true, delete: true },
       gallery: { create: true, read: true, update: true, delete: true },
-      employees: { create: true, read: true, update: true, delete: true }
+      employees: { create: true, read: true, update: true, delete: true },
+      inquiries: { create: true, read: true, update: true, delete: true },
+      constants: { create: true, read: true, update: true, delete: true }
     }
   },
   {
@@ -22,7 +24,9 @@ export const roles: Role[] = [
       clients: { create: true, read: true, update: true, delete: false },
       schedule: { create: true, read: true, update: true, delete: true },
       gallery: { create: true, read: true, update: true, delete: false },
-      employees: { create: false, read: true, update: false, delete: false }
+      employees: { create: false, read: true, update: false, delete: false },
+      inquiries: { create: true, read: true, update: true, delete: false },
+      constants: { create: false, read: true, update: true, delete: false }
     }
   },
   {
@@ -33,7 +37,9 @@ export const roles: Role[] = [
       clients: { create: false, read: true, update: false, delete: false },
       schedule: { create: false, read: true, update: false, delete: false },
       gallery: { create: false, read: true, update: false, delete: false },
-      employees: { create: false, read: false, update: false, delete: false }
+      employees: { create: false, read: false, update: false, delete: false },
+      inquiries: { create: false, read: true, update: false, delete: false },
+      constants: { create: false, read: true, update: false, delete: false }
     }
   }
 ];
