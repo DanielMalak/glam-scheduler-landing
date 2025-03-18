@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { employees } from "@/data/employeesData";
 import { EmployeePermissions } from "@/types/admin";
 
-export type ModuleType = "services" | "clients" | "schedule" | "gallery" | "employees";
+export type ModuleType = "services" | "clients" | "schedule" | "gallery" | "employees" | "inquiries" | "constants" | "roles";
 
 export function usePermissions(module: ModuleType) {
   const [permissions, setPermissions] = useState<EmployeePermissions>({

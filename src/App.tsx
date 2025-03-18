@@ -18,6 +18,9 @@ import AdminSignIn from "./pages/admin/SignIn";
 import AdminAuth from "./components/admin/AdminAuth";
 import AdminGallery from "./pages/admin/Gallery";
 import AdminEmployees from "./pages/admin/Employees";
+import AdminInquiries from "./pages/admin/Inquiries";
+import AdminConstants from "./pages/admin/Constants";
+import AdminRoles from "./pages/admin/Roles";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +47,9 @@ const App = () => (
             <Route path="schedule" element={<AdminSchedule />} />
             <Route path="gallery" element={<AdminGallery />} />
             <Route path="employees" element={<AdminEmployees />} />
+            <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="constants" element={<AdminConstants />} />
+            <Route path="roles" element={<AdminRoles />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

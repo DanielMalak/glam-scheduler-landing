@@ -9,6 +9,9 @@ import {
   Home,
   Image,
   UserCog,
+  MessageSquare,
+  Settings,
+  ShieldCheck,
 } from "lucide-react";
 import {
   Sidebar,
@@ -57,9 +60,24 @@ const AdminSidebar = () => {
       icon: Image,
     },
     {
+      title: "Inquiries",
+      path: "/admin/inquiries",
+      icon: MessageSquare,
+    },
+    {
+      title: "Site Constants",
+      path: "/admin/constants",
+      icon: Settings,
+    },
+    {
       title: "Employees",
       path: "/admin/employees",
       icon: UserCog,
+    },
+    {
+      title: "Roles",
+      path: "/admin/roles",
+      icon: ShieldCheck,
     },
   ];
 

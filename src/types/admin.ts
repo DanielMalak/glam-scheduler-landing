@@ -4,7 +4,9 @@ export type Permission =
   | "manage:clients" 
   | "manage:schedule" 
   | "manage:gallery" 
-  | "manage:employees";
+  | "manage:employees"
+  | "manage:inquiries"
+  | "manage:constants";
 
 export interface EmployeePermissions {
   create: boolean;
@@ -19,6 +21,8 @@ export interface RolePermissions {
   schedule: EmployeePermissions;
   gallery: EmployeePermissions;
   employees: EmployeePermissions;
+  inquiries: EmployeePermissions;
+  constants: EmployeePermissions;
 }
 
 export interface Role {
@@ -43,4 +47,21 @@ export interface GalleryImage {
   category: string;
   url: string;
   order: number;
+}
+
+export interface Inquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  status: "pending" | "active" | "resolved";
+  createdAt: Date;
+}
+
+export interface SiteConstants {
+  id: string;
+  name: string;
+  value: string;
+  type: "text" | "url" | "phone" | "address" | "coordinates";
 }
