@@ -201,10 +201,15 @@ const AppointmentForm = () => {
             className="space-y-6"
           >
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-serif text-dedo-black">Select a Time</h3>
-              <p className="text-gray-500 mt-1">Choose a time slot for your appointment on {date ? format(date, 'MMMM do, yyyy') : ''}</p>
+              <h3 className="text-2xl font-serif text-dedo-black">
+                Select a Time
+              </h3>
+              <p className="text-gray-500 mt-1">
+                Choose a time slot for your appointment on{" "}
+                {date ? format(date, "MMMM do, yyyy") : ""}
+              </p>
             </div>
-            
+
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-md mx-auto">
               {timeSlots.map((time) => (
                 <Button
@@ -212,10 +217,13 @@ const AppointmentForm = () => {
                   variant="outline"
                   className={`flex items-center justify-center space-x-2 px-3 py-6 h-auto transition-all ${
                     timeSlot === time
-                      ? 'bg-dedo-beige text-dedo-black border-dedo-beige'
-                      : 'hover:border-dedo-beige'
+                      ? "bg-dedo-beige text-dedo-black border-dedo-beige"
+                      : "hover:border-dedo-beige"
                   }`}
-                  onClick={() => setTimeSlot(time)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTimeSlot(time);
+                  }}
                 >
                   <Clock className="w-4 h-4" />
                   <span>{time}</span>
